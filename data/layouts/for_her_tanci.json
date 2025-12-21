@@ -1,0 +1,75 @@
+{
+  "template": "for_her/tanci",
+  "pages": [
+    {
+      "page_id": "ud4",
+      "spread": "Spread_ucf",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u116",
+      "spread": "Spread_u111",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u117",
+      "spread": "Spread_u111",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u192",
+      "spread": "Spread_u18d",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u193",
+      "spread": "Spread_u18d",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    }
+  ]
+}

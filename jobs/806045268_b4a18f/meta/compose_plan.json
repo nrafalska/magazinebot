@@ -1,0 +1,25 @@
+{
+  "meta": {
+    "job_id": "806045268_b4a18f",
+    "generated_at": "2025-12-03T21:06:27.952478",
+    "theme": "lavstory",
+    "category": "insha_podiya",
+    "pages": 16,
+    "client_name": "Tasoula",
+    "template": "C:\\Projects\\magazinebot\\data\\templates\\lavstory\\insha_podiya\\insha_podiya.indd",
+    "output_dir": "C:\\Projects\\magazinebot\\jobs\\806045268_b4a18f\\output"
+  },
+  "placements": [
+    {
+      "label": "COVER_IMAGE",
+      "photo": "C:\\Projects\\magazinebot\\jobs\\806045268_b4a18f\\input\\photo_001.jpg",
+      "filename": "photo_001.jpg",
+      "fit": "fill"
+    }
+  ],
+  "texts": {
+    "COVER_TITLE": "Our Love Story",
+    "COVER_SUB": "Best Moments",
+    "CLIENT_NAME": "Tasoula"
+  }
+}

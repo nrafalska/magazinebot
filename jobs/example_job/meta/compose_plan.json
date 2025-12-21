@@ -1,0 +1,121 @@
+{
+  "meta": {
+    "job_id": "example_job",
+    "generated_at": "2025-12-13T20:23:53.302050",
+    "theme": "lavstory",
+    "category": "insha_podiya",
+    "pages": 16,
+    "client_name": "Test User",
+    "template": "C:\\Projects\\magazinebot\\data\\templates\\lavstory\\insha_podiya\\insha_podiya.indd",
+    "output_dir": "C:\\Projects\\magazinebot\\jobs\\example_job\\output"
+  },
+  "placements": [
+    {
+      "label": "COVER_IMAGE",
+      "photo": "C:\\Projects\\magazinebot\\jobs\\example_job\\input\\41113688d833b5fdb0d3828192e55c42.jpg",
+      "filename": "41113688d833b5fdb0d3828192e55c42.jpg",
+      "fit": "fill"
+    },
+    {
+      "label": "PAGE_01_IMG_01",
+      "photo": "C:\\Projects\\magazinebot\\jobs\\example_job\\input\\53405dc9461adc29cec9ac61ee5e5aae.jpg",
+      "filename": "53405dc9461adc29cec9ac61ee5e5aae.jpg",
+      "fit": "proportional"
+    },
+    {
+      "label": "PAGE_01_IMG_02",
+      "photo": "C:\\Projects\\magazinebot\\jobs\\example_job\\input\\5603e05a8c2673f442e79372f051ebc7.jpg",
+      "filename": "5603e05a8c2673f442e79372f051ebc7.jpg",
+      "fit": "proportional"
+    },
+    {
+      "label": "PAGE_01_IMG_03",
+      "photo": "C:\\Projects\\magazinebot\\jobs\\example_job\\input\\70e856eb566154e6ba59c1ae4e57409c.jpg",
+      "filename": "70e856eb566154e6ba59c1ae4e57409c.jpg",
+      "fit": "proportional"
+    },
+    {
+      "label": "PAGE_02_IMG_01",
+      "photo": "C:\\Projects\\magazinebot\\jobs\\example_job\\input\\8f9e3683527cb14baf09982935b4a7a6.jpg",
+      "filename": "8f9e3683527cb14baf09982935b4a7a6.jpg",
+      "fit": "proportional"
+    },
+    {
+      "label": "PAGE_02_IMG_02",
+      "photo": "C:\\Projects\\magazinebot\\jobs\\example_job\\input\\a00728ba067d83085bfe2a90ade74c35.jpg",
+      "filename": "a00728ba067d83085bfe2a90ade74c35.jpg",
+      "fit": "proportional"
+    },
+    {
+      "label": "PAGE_02_IMG_03",
+      "photo": "C:\\Projects\\magazinebot\\jobs\\example_job\\input\\a282f10de463836956dc2fbf4c14da1e.jpg",
+      "filename": "a282f10de463836956dc2fbf4c14da1e.jpg",
+      "fit": "proportional"
+    },
+    {
+      "label": "PAGE_03_IMG_01",
+      "photo": "C:\\Projects\\magazinebot\\jobs\\example_job\\input\\ac14b4878d309c00e9af235092af892b.jpg",
+      "filename": "ac14b4878d309c00e9af235092af892b.jpg",
+      "fit": "proportional"
+    },
+    {
+      "label": "PAGE_03_IMG_02",
+      "photo": "C:\\Projects\\magazinebot\\jobs\\example_job\\input\\ae9c0635eb6292da6e7887822313a4db.jpg",
+      "filename": "ae9c0635eb6292da6e7887822313a4db.jpg",
+      "fit": "proportional"
+    },
+    {
+      "label": "PAGE_03_IMG_03",
+      "photo": "C:\\Projects\\magazinebot\\jobs\\example_job\\input\\b84726372e432bc4ac3a1a5c2332d00e.jpg",
+      "filename": "b84726372e432bc4ac3a1a5c2332d00e.jpg",
+      "fit": "proportional"
+    },
+    {
+      "label": "PAGE_04_IMG_01",
+      "photo": "C:\\Projects\\magazinebot\\jobs\\example_job\\input\\ca93fef86969806bb7a9195994845c32.jpg",
+      "filename": "ca93fef86969806bb7a9195994845c32.jpg",
+      "fit": "proportional"
+    },
+    {
+      "label": "PAGE_04_IMG_02",
+      "photo": "C:\\Projects\\magazinebot\\jobs\\example_job\\input\\dabc4e9f49ddeef0e82b5b24fb3be84d.jpg",
+      "filename": "dabc4e9f49ddeef0e82b5b24fb3be84d.jpg",
+      "fit": "proportional"
+    },
+    {
+      "label": "PAGE_04_IMG_03",
+      "photo": "C:\\Projects\\magazinebot\\jobs\\example_job\\input\\db0bf53048f4c1b3006bd951136f1f9b.jpg",
+      "filename": "db0bf53048f4c1b3006bd951136f1f9b.jpg",
+      "fit": "proportional"
+    },
+    {
+      "label": "PAGE_05_IMG_01",
+      "photo": "C:\\Projects\\magazinebot\\jobs\\example_job\\input\\f37762f4708e34c52ddec84e02ffcf43.jpg",
+      "filename": "f37762f4708e34c52ddec84e02ffcf43.jpg",
+      "fit": "proportional"
+    },
+    {
+      "label": "PAGE_05_IMG_02",
+      "photo": "C:\\Projects\\magazinebot\\jobs\\example_job\\input\\fa9478fc13cd4fca71150ecb91264faf.jpg",
+      "filename": "fa9478fc13cd4fca71150ecb91264faf.jpg",
+      "fit": "proportional"
+    },
+    {
+      "label": "PAGE_05_IMG_03",
+      "photo": "C:\\Projects\\magazinebot\\jobs\\example_job\\input\\photo1.jpg",
+      "filename": "photo1.jpg",
+      "fit": "proportional"
+    },
+    {
+      "label": "BACK_IMAGE",
+      "photo": "C:\\Projects\\magazinebot\\jobs\\example_job\\input\\photo2.jpg",
+      "filename": "photo2.jpg",
+      "fit": "fill"
+    }
+  ],
+  "texts": {
+    "COVER_TITLE": "Our Love Story",
+    "COVER_SUB": "Best Moments",
+    "CLIENT_NAME": "Test User"
+  }
+}

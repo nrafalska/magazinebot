@@ -1,0 +1,1139 @@
+{
+  "template": "for_her/druzhba",
+  "pages": [
+    {
+      "page_id": "ud4",
+      "spread": "Spread_ucf",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u23fd",
+      "spread": "Spread_u23f8",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u23fe",
+      "spread": "Spread_u23f8",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u20ed",
+      "spread": "Spread_u20e8",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u20ee",
+      "spread": "Spread_u20e8",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u226f",
+      "spread": "Spread_u226a",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u2270",
+      "spread": "Spread_u226a",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u2312",
+      "spread": "Spread_u230d",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u2313",
+      "spread": "Spread_u230d",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u1fde",
+      "spread": "Spread_u1fd9",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u1fdf",
+      "spread": "Spread_u1fd9",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u20be",
+      "spread": "Spread_u20b9",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u20bf",
+      "spread": "Spread_u20b9",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u1ef3",
+      "spread": "Spread_u1eee",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u1ef4",
+      "spread": "Spread_u1eee",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u1dcd",
+      "spread": "Spread_u1dc8",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u1dce",
+      "spread": "Spread_u1dc8",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "ua9f",
+      "spread": "Spread_ua9a",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "uaa0",
+      "spread": "Spread_ua9a",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "ubd5",
+      "spread": "Spread_ubd0",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "ubd6",
+      "spread": "Spread_ubd0",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "uc31",
+      "spread": "Spread_uc2c",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "uc32",
+      "spread": "Spread_uc2c",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "uc56",
+      "spread": "Spread_uc51",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "uc57",
+      "spread": "Spread_uc51",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "uce9",
+      "spread": "Spread_uce4",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "ucea",
+      "spread": "Spread_uce4",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "ud62",
+      "spread": "Spread_ud5d",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "ud63",
+      "spread": "Spread_ud5d",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "ue2e",
+      "spread": "Spread_ue29",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "ue2f",
+      "spread": "Spread_ue29",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "ue7c",
+      "spread": "Spread_ue77",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "ue7d",
+      "spread": "Spread_ue77",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u1040",
+      "spread": "Spread_u103b",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u1041",
+      "spread": "Spread_u103b",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u12ed",
+      "spread": "Spread_u12e8",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u12ee",
+      "spread": "Spread_u12e8",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u14c3",
+      "spread": "Spread_u14be",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u14c4",
+      "spread": "Spread_u14be",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u1582",
+      "spread": "Spread_u157d",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u1583",
+      "spread": "Spread_u157d",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u1658",
+      "spread": "Spread_u1653",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u1659",
+      "spread": "Spread_u1653",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u16d9",
+      "spread": "Spread_u16d4",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u16da",
+      "spread": "Spread_u16d4",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u1782",
+      "spread": "Spread_u177d",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u1783",
+      "spread": "Spread_u177d",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u1946",
+      "spread": "Spread_u1941",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u1947",
+      "spread": "Spread_u1941",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u1a28",
+      "spread": "Spread_u1a23",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u1a29",
+      "spread": "Spread_u1a23",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u1ae4",
+      "spread": "Spread_u1adf",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u1ae5",
+      "spread": "Spread_u1adf",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u1b42",
+      "spread": "Spread_u1b3d",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u1b43",
+      "spread": "Spread_u1b3d",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u1ba5",
+      "spread": "Spread_u1ba0",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u1ba6",
+      "spread": "Spread_u1ba0",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u1c51",
+      "spread": "Spread_u1c4c",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u1c52",
+      "spread": "Spread_u1c4c",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u8de",
+      "spread": "Spread_u8d9",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u8df",
+      "spread": "Spread_u8d9",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u972",
+      "spread": "Spread_u96d",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u973",
+      "spread": "Spread_u96d",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u9de",
+      "spread": "Spread_u9d9",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u9df",
+      "spread": "Spread_u9d9",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "ua5b",
+      "spread": "Spread_ua56",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "ua5c",
+      "spread": "Spread_ua56",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u893",
+      "spread": "Spread_u88e",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u894",
+      "spread": "Spread_u88e",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u5c7",
+      "spread": "Spread_u5c2",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u5c8",
+      "spread": "Spread_u5c2",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u392",
+      "spread": "Spread_u38d",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u393",
+      "spread": "Spread_u38d",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u43d",
+      "spread": "Spread_u438",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u43e",
+      "spread": "Spread_u438",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u2de",
+      "spread": "Spread_u2d9",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u2df",
+      "spread": "Spread_u2d9",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u1bf",
+      "spread": "Spread_u1ba",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u1c0",
+      "spread": "Spread_u1ba",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u114",
+      "spread": "Spread_u10f",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    },
+    {
+      "page_id": "u115",
+      "spread": "Spread_u10f",
+      "bounds": {
+        "top": 0.0,
+        "left": 0.0,
+        "bottom": 822.0472440944882,
+        "right": 623.6220472440945,
+        "width": 623.6220472440945,
+        "height": 822.0472440944882
+      },
+      "photo_slots": [],
+      "text_slots": []
+    }
+  ]
+}

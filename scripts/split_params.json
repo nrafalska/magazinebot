@@ -1,0 +1,126 @@
+﻿{
+    "backupDir":  "C:/Projects/magazinebot/data/templates/_ORIGINALS_BACKUP",
+    "outputDir":  "",
+    "files":  [
+                  {
+                      "path":  "C:/Projects/magazinebot/data/templates/adult18/adult18.indd",
+                      "dir":  "C:/Projects/magazinebot/data/templates/adult18",
+                      "name":  "adult18.indd"
+                  },
+                  {
+                      "path":  "C:/Projects/magazinebot/data/templates/for_her/biznes/biznes.indd",
+                      "dir":  "C:/Projects/magazinebot/data/templates/for_her/biznes",
+                      "name":  "biznes.indd"
+                  },
+                  {
+                      "path":  "C:/Projects/magazinebot/data/templates/for_her/druzhba/druzhba.indd",
+                      "dir":  "C:/Projects/magazinebot/data/templates/for_her/druzhba",
+                      "name":  "druzhba.indd"
+                  },
+                  {
+                      "path":  "C:/Projects/magazinebot/data/templates/for_her/filmy/filmy.indd",
+                      "dir":  "C:/Projects/magazinebot/data/templates/for_her/filmy",
+                      "name":  "filmy.indd"
+                  },
+                  {
+                      "path":  "C:/Projects/magazinebot/data/templates/for_her/horoskop/horoskop.indd",
+                      "dir":  "C:/Projects/magazinebot/data/templates/for_her/horoskop",
+                      "name":  "horoskop.indd"
+                  },
+                  {
+                      "path":  "C:/Projects/magazinebot/data/templates/for_her/imya/imya.indd",
+                      "dir":  "C:/Projects/magazinebot/data/templates/for_her/imya",
+                      "name":  "imya.indd"
+                  },
+                  {
+                      "path":  "C:/Projects/magazinebot/data/templates/for_her/knyhy/knyhy.indd",
+                      "dir":  "C:/Projects/magazinebot/data/templates/for_her/knyhy",
+                      "name":  "knyhy.indd"
+                  },
+                  {
+                      "path":  "C:/Projects/magazinebot/data/templates/for_her/lyst/lyst.indd",
+                      "dir":  "C:/Projects/magazinebot/data/templates/for_her/lyst",
+                      "name":  "lyst.indd"
+                  },
+                  {
+                      "path":  "C:/Projects/magazinebot/data/templates/for_her/moda/moda.indd",
+                      "dir":  "C:/Projects/magazinebot/data/templates/for_her/moda",
+                      "name":  "moda.indd"
+                  },
+                  {
+                      "path":  "C:/Projects/magazinebot/data/templates/for_her/muzyka/muzyka.indd",
+                      "dir":  "C:/Projects/magazinebot/data/templates/for_her/muzyka",
+                      "name":  "muzyka.indd"
+                  },
+                  {
+                      "path":  "C:/Projects/magazinebot/data/templates/for_her/navchannya/navchannya.indd",
+                      "dir":  "C:/Projects/magazinebot/data/templates/for_her/navchannya",
+                      "name":  "navchannya.indd"
+                  },
+                  {
+                      "path":  "C:/Projects/magazinebot/data/templates/for_her/podorozhi/podorozhi.indd",
+                      "dir":  "C:/Projects/magazinebot/data/templates/for_her/podorozhi",
+                      "name":  "podorozhi.indd"
+                  },
+                  {
+                      "path":  "C:/Projects/magazinebot/data/templates/for_her/psyhologiya/psyhologiya.indd",
+                      "dir":  "C:/Projects/magazinebot/data/templates/for_her/psyhologiya",
+                      "name":  "psyhologiya.indd"
+                  },
+                  {
+                      "path":  "C:/Projects/magazinebot/data/templates/for_her/retsepty/retsepty.indd",
+                      "dir":  "C:/Projects/magazinebot/data/templates/for_her/retsepty",
+                      "name":  "retsepty.indd"
+                  },
+                  {
+                      "path":  "C:/Projects/magazinebot/data/templates/for_her/samorozvytok/samorozvytok.indd",
+                      "dir":  "C:/Projects/magazinebot/data/templates/for_her/samorozvytok",
+                      "name":  "samorozvytok.indd"
+                  },
+                  {
+                      "path":  "C:/Projects/magazinebot/data/templates/for_her/simya/simya.indd",
+                      "dir":  "C:/Projects/magazinebot/data/templates/for_her/simya",
+                      "name":  "simya.indd"
+                  },
+                  {
+                      "path":  "C:/Projects/magazinebot/data/templates/for_her/stosunky/stosunky.indd",
+                      "dir":  "C:/Projects/magazinebot/data/templates/for_her/stosunky",
+                      "name":  "stosunky.indd"
+                  },
+                  {
+                      "path":  "C:/Projects/magazinebot/data/templates/for_her/tanci/tanci.indd",
+                      "dir":  "C:/Projects/magazinebot/data/templates/for_her/tanci",
+                      "name":  "tanci.indd"
+                  },
+                  {
+                      "path":  "C:/Projects/magazinebot/data/templates/for_her/universalni/universalni.indd",
+                      "dir":  "C:/Projects/magazinebot/data/templates/for_her/universalni",
+                      "name":  "universalni.indd"
+                  },
+                  {
+                      "path":  "C:/Projects/magazinebot/data/templates/for_her/zdn/zdn.indd",
+                      "dir":  "C:/Projects/magazinebot/data/templates/for_her/zdn",
+                      "name":  "zdn.indd"
+                  },
+                  {
+                      "path":  "C:/Projects/magazinebot/data/templates/for_her/zdorovya/zdorovya.indd",
+                      "dir":  "C:/Projects/magazinebot/data/templates/for_her/zdorovya",
+                      "name":  "zdorovya.indd"
+                  },
+                  {
+                      "path":  "C:/Projects/magazinebot/data/templates/lavstory/insha_podiya/insha_podiya.indd",
+                      "dir":  "C:/Projects/magazinebot/data/templates/lavstory/insha_podiya",
+                      "name":  "insha_podiya.indd"
+                  },
+                  {
+                      "path":  "C:/Projects/magazinebot/data/templates/lavstory/richnytsia/richnytsia.indd",
+                      "dir":  "C:/Projects/magazinebot/data/templates/lavstory/richnytsia",
+                      "name":  "richnytsia.indd"
+                  },
+                  {
+                      "path":  "C:/Projects/magazinebot/data/templates/lavstory/vesilnyi/vesilnyi.indd",
+                      "dir":  "C:/Projects/magazinebot/data/templates/lavstory/vesilnyi",
+                      "name":  "vesilnyi.indd"
+                  }
+              ]
+}

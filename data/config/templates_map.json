@@ -1,0 +1,54 @@
+{
+  "lavstory": [
+    {
+      "name": "insha_podiya",
+      "pages": 16,
+      "path": "data/templates/lavstory/insha_podiya/insha_podiya.indd"
+    },
+    {
+      "name": "vesilnyi",
+      "pages": 16,
+      "path": "data/templates/lavstory/vesilnyi/vesilnyi.indd"
+    },
+    {
+      "name": "richnytsia",
+      "pages": 16,
+      "path": "data/templates/lavstory/richnytsia/richnytsia.indd"
+    }
+  ],
+
+  "for_her": [
+    { "name": "biznes", "pages": 16, "path": "data/templates/for_her/biznes/biznes.indd" },
+    { "name": "horoskop", "pages": 16, "path": "data/templates/for_her/horoskop/horoskop.indd" },
+    { "name": "druzhba", "pages": 16, "path": "data/templates/for_her/druzhba/druzhba.indd" },
+    { "name": "z_dnem_narodzhennia", "pages": 16, "path": "data/templates/for_her/zdn/zdn.indd" },
+    { "name": "zdorovya", "pages": 16, "path": "data/templates/for_her/zdorovya/zdorovya.indd" },
+    { "name": "znachennia_imeni", "pages": 16, "path": "data/templates/for_her/imya/imya.indd" },
+    { "name": "knyhy", "pages": 16, "path": "data/templates/for_her/knyhy/knyhy.indd" },
+    { "name": "lyst", "pages": 16, "path": "data/templates/for_her/lyst/lyst.indd" },
+    { "name": "moda", "pages": 16, "path": "data/templates/for_her/moda/moda.indd" },
+    { "name": "muzyka", "pages": 16, "path": "data/templates/for_her/muzyka/muzyka.indd" },
+    { "name": "navchannia", "pages": 16, "path": "data/templates/for_her/navchannya/navchannya.indd" },
+    { "name": "podorozhi", "pages": 16, "path": "data/templates/for_her/podorozhi/podorozhi.indd" },
+    { "name": "psykholohiya", "pages": 16, "path": "data/templates/for_her/psyhologiya/psyhologiya.indd" },
+    { "name": "retsepty", "pages": 16, "path": "data/templates/for_her/retsepty/retsepty.indd" },
+    { "name": "simya", "pages": 16, "path": "data/templates/for_her/simya/simya.indd" },
+    { "name": "samorozvytok", "pages": 16, "path": "data/templates/for_her/samorozvytok/samorozvytok.indd" },
+    { "name": "stosunky", "pages": 16, "path": "data/templates/for_her/stosunky/stosunky.indd" },
+    { "name": "tantsi", "pages": 16, "path": "data/templates/for_her/tanci/tanci.indd" },
+    { "name": "universalni", "pages": 16, "path": "data/templates/for_her/universalni/universalni.indd" },
+    { "name": "filmy", "pages": 16, "path": "data/templates/for_her/filmy/filmy.indd" }
+  ],
+
+  "adult18": [
+    {
+      "name": "adult18_shablon",
+      "pages": 16,
+      "path": "data/templates/adult18/adult18_shablon/adult18_shablon.indd"
+    }
+  ],
+
+  "custom": {
+    "default": "data/templates/adult18/adult18_shablon/adult18_shablon.indd"
+  }
+}

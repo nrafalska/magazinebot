@@ -1,0 +1,51 @@
+﻿# InDesign templates (ВЕЛИКІ!)
+*.indd
+*.indt
+*.idml
+*.indb
+*.pdf
+
+# InDesign lock files
+*.~indd
+*.~idlk
+
+# Backup
+*_ORIGINAL.*
+*~
+
+# Output
+output/
+
+# Logs
+*.log
+*.txt
+
+# Links/Images (ВЕЛИКІ!)
+Links/
+Document fonts/
+
+# Node
+node_modules/
+
+# Python
+__pycache__/
+*.pyc
+venv/
+env/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+
+# ✅ ДОЗВОЛИТИ тільки код:
+!scripts/*.jsx
+!scripts/*.ps1
+!*.py
+!*.js
+!*.json
+!*.md

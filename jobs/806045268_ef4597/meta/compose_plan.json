@@ -1,0 +1,25 @@
+{
+  "meta": {
+    "job_id": "806045268_ef4597",
+    "generated_at": "2025-12-03T01:05:28.610196",
+    "theme": "adult18",
+    "category": "adult18_shablon",
+    "pages": 16,
+    "client_name": "Tasoula",
+    "template": "C:\\Projects\\magazinebot\\data\\templates\\adult18\\adult18.indd",
+    "output_dir": "C:\\Projects\\magazinebot\\jobs\\806045268_ef4597\\output"
+  },
+  "placements": [
+    {
+      "label": "COVER_IMAGE",
+      "photo": "C:\\Projects\\magazinebot\\jobs\\806045268_ef4597\\input\\photo_001.jpg",
+      "filename": "photo_001.jpg",
+      "fit": "fill"
+    }
+  ],
+  "texts": {
+    "COVER_TITLE": "Tasoula",
+    "COVER_SUB": "",
+    "CLIENT_NAME": "Tasoula"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "meta": {
+    "job_id": "806045268_d14610",
+    "generated_at": "2025-12-03T02:49:13.568260",
+    "theme": "for_her",
+    "category": "universalni",
+    "pages": 16,
+    "client_name": "Tasoula",
+    "template": "C:\\Projects\\magazinebot\\data\\templates\\for_her\\universalni\\universalni.indd",
+    "output_dir": "C:\\Projects\\magazinebot\\jobs\\806045268_d14610\\output"
+  },
+  "placements": [
+    {
+      "label": "COVER_IMAGE",
+      "photo": "C:\\Projects\\magazinebot\\jobs\\806045268_d14610\\input\\photo_001.jpg",
+      "filename": "photo_001.jpg",
+      "fit": "fill"
+    }
+  ],
+  "texts": {
+    "COVER_TITLE": "For Her",
+    "COVER_SUB": "",
+    "CLIENT_NAME": "Tasoula"
+  }
+}
