@@ -207,6 +207,79 @@ function listAllLabels(doc) {
 }
 
 // ======================================================
+// FALLBACK: Place images into rectangles by page order
+// ======================================================
+function getImageFramesOnPage(page) {
+    var frames = [];
+    var items = page.allPageItems;
+
+    for (var i = 0; i < items.length; i++) {
+        var item = items[i];
+        // Check if it's a rectangle that can hold an image
+        if (item.constructor.name === "Rectangle" ||
+            item.constructor.name === "Polygon" ||
+            item.constructor.name === "Oval") {
+            frames.push(item);
+        }
+    }
+
+    // Sort by position (top-left first)
+    frames.sort(function(a, b) {
+        var boundsA = a.geometricBounds; // [top, left, bottom, right]
+        var boundsB = b.geometricBounds;
+        if (Math.abs(boundsA[0] - boundsB[0]) < 10) {
+            return boundsA[1] - boundsB[1]; // same row, sort by left
+        }
+        return boundsA[0] - boundsB[0]; // sort by top
+    });
+
+    return frames;
+}
+
+function placeFallbackImages(doc, placements) {
+    log("=== FALLBACK MODE: Placing images by page order ===");
+
+    var placedCount = 0;
+    var photoIndex = 0;
+
+    for (var pageIdx = 0; pageIdx < doc.pages.length; pageIdx++) {
+        if (photoIndex >= placements.length) break;
+
+        var page = doc.pages[pageIdx];
+        var frames = getImageFramesOnPage(page);
+
+        log("Page " + (pageIdx + 1) + ": found " + frames.length + " image frames");
+
+        // Place one photo per page (in the largest frame)
+        if (frames.length > 0 && photoIndex < placements.length) {
+            // Find largest frame by area
+            var largestFrame = frames[0];
+            var maxArea = 0;
+
+            for (var f = 0; f < frames.length; f++) {
+                var bounds = frames[f].geometricBounds;
+                var area = (bounds[2] - bounds[0]) * (bounds[3] - bounds[1]);
+                if (area > maxArea) {
+                    maxArea = area;
+                    largestFrame = frames[f];
+                }
+            }
+
+            var p = placements[photoIndex];
+            log("  Placing " + p.filename + " into frame on page " + (pageIdx + 1));
+
+            if (placeImage(largestFrame, p.photo, "fill")) {
+                placedCount++;
+            }
+            photoIndex++;
+        }
+    }
+
+    log("=== FALLBACK: Placed " + placedCount + "/" + placements.length + " images ===");
+    return placedCount;
+}
+
+// ======================================================
 // MAIN
 // ======================================================
 (function(){
@@ -254,8 +327,8 @@ function listAllLabels(doc) {
         }
     }
 
-    // images
-    log("Placing images...");
+    // images - try label-based placement first
+    log("Placing images by label...");
     var ok = 0;
     var failed = [];
     for (var i = 0; i < placements.length; i++) {
@@ -266,9 +339,13 @@ function listAllLabels(doc) {
             failed.push(p.label);
         }
     }
-    log("Placed " + ok + "/" + placements.length);
+    log("Placed by label: " + ok + "/" + placements.length);
 
-    if (failed.length > 0) {
+    // FALLBACK: If no images placed by label, use page-order placement
+    if (ok === 0 && placements.length > 0) {
+        log("No labeled frames found - using FALLBACK placement");
+        ok = placeFallbackImages(doc, placements);
+    } else if (failed.length > 0) {
         log("FAILED PLACEMENTS: " + failed.join(", "));
         log("Check that template has frames with these labels!");
     }
