@@ -162,27 +162,40 @@ function adjustPageCount(doc, targetPages) {
     var currentPages = doc.pages.length;
     log("Current pages: " + currentPages + ", Target: " + targetPages);
 
-    if (currentPages <= targetPages) {
-        log("No pages to remove");
+    // ADD pages if we need more
+    if (currentPages < targetPages) {
+        var pagesToAdd = targetPages - currentPages;
+        log("Adding " + pagesToAdd + " pages...");
+
+        for (var i = 0; i < pagesToAdd; i++) {
+            try {
+                doc.pages.add();
+            } catch(e) {
+                log("Error adding page: " + e.message);
+                break;
+            }
+        }
+        log("Pages after adding: " + doc.pages.length);
         return;
     }
 
-    // Remove pages from the end (but keep at least targetPages)
-    var pagesToRemove = currentPages - targetPages;
-    log("Removing " + pagesToRemove + " pages...");
+    // REMOVE pages if we have too many
+    if (currentPages > targetPages) {
+        var pagesToRemove = currentPages - targetPages;
+        log("Removing " + pagesToRemove + " pages...");
 
-    for (var i = 0; i < pagesToRemove; i++) {
-        try {
-            // Always remove the last page
-            var lastPage = doc.pages[doc.pages.length - 1];
-            lastPage.remove();
-        } catch(e) {
-            log("Error removing page: " + e.message);
-            break;
+        for (var i = 0; i < pagesToRemove; i++) {
+            try {
+                // Always remove the last page
+                var lastPage = doc.pages[doc.pages.length - 1];
+                lastPage.remove();
+            } catch(e) {
+                log("Error removing page: " + e.message);
+                break;
+            }
         }
+        log("Pages after removal: " + doc.pages.length);
     }
-
-    log("Pages after removal: " + doc.pages.length);
 }
 
 function listAllLabels(doc) {
