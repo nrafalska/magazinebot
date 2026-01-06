@@ -162,14 +162,28 @@ function adjustPageCount(doc, targetPages) {
     var currentPages = doc.pages.length;
     log("Current pages: " + currentPages + ", Target: " + targetPages);
 
+    // Get master spread for new pages
+    var masterSpread = null;
+    try {
+        if (doc.masterSpreads.length > 0) {
+            masterSpread = doc.masterSpreads[0];
+            log("Found master spread: " + masterSpread.name);
+        }
+    } catch(e) {
+        log("No master spread found: " + e.message);
+    }
+
     // ADD pages if we need more
     if (currentPages < targetPages) {
         var pagesToAdd = targetPages - currentPages;
-        log("Adding " + pagesToAdd + " pages...");
+        log("Adding " + pagesToAdd + " pages with master...");
 
         for (var i = 0; i < pagesToAdd; i++) {
             try {
-                doc.pages.add();
+                var newPage = doc.pages.add();
+                if (masterSpread) {
+                    newPage.appliedMaster = masterSpread;
+                }
             } catch(e) {
                 log("Error adding page: " + e.message);
                 break;
@@ -186,7 +200,6 @@ function adjustPageCount(doc, targetPages) {
 
         for (var i = 0; i < pagesToRemove; i++) {
             try {
-                // Always remove the last page
                 var lastPage = doc.pages[doc.pages.length - 1];
                 lastPage.remove();
             } catch(e) {
@@ -340,28 +353,11 @@ function placeFallbackImages(doc, placements) {
         }
     }
 
-    // images - try label-based placement first
-    log("Placing images by label...");
-    var ok = 0;
-    var failed = [];
-    for (var i = 0; i < placements.length; i++) {
-        var p = placements[i];
-        if (placeImageByLabel(doc, p.label, p.photo, p.fit || "proportional")) {
-            ok++;
-        } else {
-            failed.push(p.label);
-        }
-    }
-    log("Placed by label: " + ok + "/" + placements.length);
-
-    // FALLBACK: If no images placed by label, use page-order placement
-    if (ok === 0 && placements.length > 0) {
-        log("No labeled frames found - using FALLBACK placement");
-        ok = placeFallbackImages(doc, placements);
-    } else if (failed.length > 0) {
-        log("FAILED PLACEMENTS: " + failed.join(", "));
-        log("Check that template has frames with these labels!");
-    }
+    // ALWAYS use fallback - place images by page order
+    // Label-based placement doesn't work reliably with this template
+    log("Placing images by page order (fallback mode)...");
+    var ok = placeFallbackImages(doc, placements);
+    log("Total placed: " + ok + "/" + placements.length);
 
     // output
     var outDir = new Folder(meta.output_dir);
