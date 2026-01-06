@@ -47,7 +47,7 @@ def create_dirs(job_id: str):
 # =============================
 # META JSON
 # =============================
-def write_job_json(job_dirs, job_id, style_key, user):
+def write_job_json(job_dirs, job_id, style_key, user, photo_count: int = 0):
     """Створює job.json перед запуском пайплайна."""
 
     if style_key == "lavstory_insha_podiya":
@@ -60,11 +60,14 @@ def write_job_json(job_dirs, job_id, style_key, user):
         theme = "adult18"
         category = "adult18_shablon"
 
+    # pages буде перераховано в build_plan.py на основі фото
+    # тут задаємо лише як hint для вибору шаблону
     meta = {
         "job_id": job_id,
         "theme": theme,
         "category": category,
-        "pages": 16,
+        "pages": 16,  # hint для шаблону, реальна к-сть буде в compose_plan
+        "photo_count": photo_count,
         "client_name": user,
     }
 
@@ -210,8 +213,9 @@ async def chosen_style(callback: CallbackQuery, state: FSMContext):
     job_id = data["job_id"]
     job_dirs = {k: Path(v) for k, v in data["job_dirs"].items()}
     username = callback.from_user.full_name
+    photo_count = len(data.get("photos", []))
 
-    write_job_json(job_dirs, job_id, style_key, username)
+    write_job_json(job_dirs, job_id, style_key, username, photo_count)
 
     await state.set_state(MagazineFSM.processing)
     await callback.message.answer("Генерую журнал… це займе 1–3 хвилини ⏳")
