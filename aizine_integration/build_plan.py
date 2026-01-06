@@ -121,10 +121,45 @@ def analyze_photos(input_dir: Path, verbose=False) -> list[dict]:
     return photos
 
 
-def generate_placements(photos: list[dict], pages: int, verbose=False) -> list[dict]:
+def calculate_pages_for_photos(photo_count: int, verbose=False) -> int:
+    """
+    Розраховує кількість сторінок на основі кількості фото.
+    - 1 фото на обкладинку
+    - до 3 фото на внутрішню сторінку
+    - 1 фото на задню обкладинку
+    - Мінімум 4 сторінки, завжди парне число
+    """
+    if photo_count <= 0:
+        return 4
+
+    # Cover = 1, Back = 1, решта = internal
+    internal_photos = max(0, photo_count - 2)
+
+    # До 3 фото на сторінку
+    internal_pages = (internal_photos + 2) // 3  # ceil division
+
+    # Cover (1) + internal + back (1)
+    total = 1 + internal_pages + 1
+
+    # Мінімум 4 сторінки
+    if total < 4:
+        total = 4
+
+    # Парне число для друку
+    if total % 2 != 0:
+        total += 1
+
+    log(f"Photos: {photo_count} -> Pages: {total}", verbose)
+    return total
+
+
+def generate_placements(photos: list[dict], pages: int, verbose=False) -> tuple[list[dict], int]:
+    """
+    Генерує placements та повертає (placements, actual_pages).
+    """
     placements = []
     if not photos:
-        return placements
+        return placements, 4
 
     log("Generating placements", verbose)
 
@@ -170,8 +205,11 @@ def generate_placements(photos: list[dict], pages: int, verbose=False) -> list[d
             "fit": "fill",
         })
 
-    log(f"Generated {len(placements)} placements", verbose)
-    return placements
+    # Розраховуємо реальну кількість сторінок
+    actual_pages = calculate_pages_for_photos(len(photos), verbose)
+
+    log(f"Generated {len(placements)} placements for {actual_pages} pages", verbose)
+    return placements, actual_pages
 
 
 # ==========================
@@ -244,8 +282,12 @@ def build_plan(job_id=None, job_path: Path | None = None, verbose=False) -> dict
     if not photos:
         raise ValueError("No photos found in input folder")
 
-    placements = generate_placements(photos, pages, verbose)
+    placements, actual_pages = generate_placements(photos, pages, verbose)
     texts = generate_texts(theme, client_name)
+
+    # Використовуємо реальну кількість сторінок на основі фото
+    final_pages = actual_pages
+    log(f"Final page count: {final_pages} (based on {len(photos)} photos)", verbose)
 
     # ===== Формуємо план =====
     plan = {
@@ -254,7 +296,7 @@ def build_plan(job_id=None, job_path: Path | None = None, verbose=False) -> dict
             "generated_at": datetime.now().isoformat(),
             "theme": theme,
             "category": category,
-            "pages": pages,
+            "pages": final_pages,
             "client_name": client_name,
             "template": str(template_path.absolute()),
             "output_dir": str((job_dir / "output").absolute()),

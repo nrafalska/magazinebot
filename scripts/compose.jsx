@@ -118,6 +118,95 @@ function setTextByLabel(doc, label, txt) {
 }
 
 // ======================================================
+// PAGE MANAGEMENT
+// ======================================================
+function calculateRequiredPages(placements) {
+    // Cover = 1 page, Back = 1 page
+    // Internal pages: parse PAGE_XX_IMG_YY labels
+    var maxPage = 0;
+
+    for (var i = 0; i < placements.length; i++) {
+        var label = placements[i].label;
+
+        if (label === "COVER_IMAGE") {
+            // Cover is page 1
+            if (maxPage < 1) maxPage = 1;
+        } else if (label === "BACK_IMAGE") {
+            // Back cover handled separately
+        } else if (label.indexOf("PAGE_") === 0) {
+            // Extract page number from PAGE_XX_IMG_YY
+            var match = label.match(/PAGE_(\d+)_IMG/);
+            if (match) {
+                var pageNum = parseInt(match[1], 10) + 1; // +1 because cover is page 1
+                if (pageNum > maxPage) maxPage = pageNum;
+            }
+        }
+    }
+
+    // Add 1 for back cover if we have BACK_IMAGE
+    for (var j = 0; j < placements.length; j++) {
+        if (placements[j].label === "BACK_IMAGE") {
+            maxPage += 1;
+            break;
+        }
+    }
+
+    // Minimum 2 pages (cover + back), ensure even number for spreads
+    if (maxPage < 2) maxPage = 2;
+    if (maxPage % 2 !== 0) maxPage += 1;
+
+    return maxPage;
+}
+
+function adjustPageCount(doc, targetPages) {
+    var currentPages = doc.pages.length;
+    log("Current pages: " + currentPages + ", Target: " + targetPages);
+
+    if (currentPages <= targetPages) {
+        log("No pages to remove");
+        return;
+    }
+
+    // Remove pages from the end (but keep at least targetPages)
+    var pagesToRemove = currentPages - targetPages;
+    log("Removing " + pagesToRemove + " pages...");
+
+    for (var i = 0; i < pagesToRemove; i++) {
+        try {
+            // Always remove the last page
+            var lastPage = doc.pages[doc.pages.length - 1];
+            lastPage.remove();
+        } catch(e) {
+            log("Error removing page: " + e.message);
+            break;
+        }
+    }
+
+    log("Pages after removal: " + doc.pages.length);
+}
+
+function listAllLabels(doc) {
+    log("=== ALL FRAME LABELS IN DOCUMENT ===");
+    var items = doc.allPageItems;
+    var labels = [];
+
+    for (var i = 0; i < items.length; i++) {
+        var lbl = items[i].label;
+        if (lbl && lbl.length > 0) {
+            labels.push(lbl);
+        }
+    }
+
+    log("Found " + labels.length + " labeled frames:");
+    for (var j = 0; j < labels.length; j++) {
+        log("  - " + labels[j]);
+    }
+    log("=== END LABELS ===");
+
+    return labels;
+}
+
+// ======================================================
 // MAIN
 // ======================================================
 (function(){
@@ -141,13 +230,21 @@ function setTextByLabel(doc, label, txt) {
     // open template
     var tmpl = ensureFile(meta.template);
     var doc;
-    
+
     try {
         doc = app.open(tmpl);
         log("Template opened OK");
     } catch(e) {
         throw new Error("Cannot open template: " + e.message);
     }
+
+    // List all labels in document for debugging
+    var existingLabels = listAllLabels(doc);
+
+    // Calculate required pages and adjust document
+    var requiredPages = meta.pages || calculateRequiredPages(placements);
+    log("Required pages from meta: " + requiredPages);
+    adjustPageCount(doc, requiredPages);
 
     // text
     for (var key in texts) {
@@ -160,11 +257,21 @@ function setTextByLabel(doc, label, txt) {
     // images
     log("Placing images...");
     var ok = 0;
+    var failed = [];
     for (var i = 0; i < placements.length; i++) {
         var p = placements[i];
-        if (placeImageByLabel(doc, p.label, p.photo, p.fit || "proportional")) ok++;
+        if (placeImageByLabel(doc, p.label, p.photo, p.fit || "proportional")) {
+            ok++;
+        } else {
+            failed.push(p.label);
+        }
     }
     log("Placed " + ok + "/" + placements.length);
+
+    if (failed.length > 0) {
+        log("FAILED PLACEMENTS: " + failed.join(", "));
+        log("Check that template has frames with these labels!");
+    }
 
     // output
     var outDir = new Folder(meta.output_dir);
