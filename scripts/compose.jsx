@@ -73,6 +73,10 @@ function log(msg) {
     try {
         if (_logFile) {
             _logFile.writeln("[" + new Date().toTimeString().substr(0,8) + "] " + msg);
+            // Flush immediately so we don't lose logs on crash
+            _logFile.close();
+            _logFile.open("a");
+            _logFile.encoding = "UTF-8";
         }
     } catch(e) {}
 }
@@ -418,9 +422,28 @@ function placeFallbackImages(doc, placements) {
     // STEP 4: Check template file
     try {
         log("STEP 4: Checking template file...");
-        tmpl = ensureFile(meta.template);
-        log("STEP 4 OK: Template exists: " + tmpl.fsName);
+        log("STEP 4a: Template path from meta: " + meta.template);
+
+        // Normalize path - convert backslashes to forward slashes
+        var templatePath = meta.template;
+        if (templatePath) {
+            templatePath = templatePath.replace(/\\/g, "/");
+        }
+        log("STEP 4b: Normalized path: " + templatePath);
+
+        log("STEP 4c: Creating File object...");
+        tmpl = new File(templatePath);
+        log("STEP 4d: File object created");
+
+        log("STEP 4e: Checking if file exists...");
+        if (!tmpl.exists) {
+            log("STEP 4e: File does NOT exist!");
+            throw new Error("Template file not found: " + templatePath);
+        }
+        log("STEP 4f: File exists: " + tmpl.exists);
+        log("STEP 4 OK: Template path: " + tmpl.fsName);
     } catch(e) {
+        closeLogFile();
         throw new Error("STEP 4 FAILED (template): " + e.message);
     }
 
