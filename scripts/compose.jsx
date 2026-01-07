@@ -8,9 +8,77 @@
 
 app.scriptPreferences.userInteractionLevel = UserInteractionLevels.NEVER_INTERACT;
 
+// Global log file for debugging
+var _logFile = null;
+var _logPath = "";
+
+function getPlanPath() {
+    // Try environment variable first
+    var planPath = $.getenv("AIZINE_PLAN");
+    if (planPath && planPath !== "null" && planPath !== "undefined") {
+        return planPath;
+    }
+
+    // Try config file
+    var configPath = $.getenv("AIZINE_CONFIG");
+    if (!configPath) {
+        configPath = Folder.temp.fsName + "/magazinebot_config.txt";
+    }
+
+    var configFile = new File(configPath);
+    if (configFile.exists) {
+        configFile.open("r");
+        configFile.encoding = "UTF-8";
+        planPath = configFile.read();
+        configFile.close();
+        return planPath.replace(/^\s+|\s+$/g, "");
+    }
+
+    return null;
+}
+
+function initLogFile() {
+    try {
+        // Get plan path to determine log location
+        var planPath = getPlanPath();
+        if (planPath) {
+            var planFile = new File(planPath);
+            _logPath = planFile.parent.fsName + "/compose_debug.log";
+            _logFile = new File(_logPath);
+            _logFile.open("w");
+            _logFile.encoding = "UTF-8";
+            _logFile.writeln("=== COMPOSE.JSX DEBUG LOG ===");
+            _logFile.writeln("Started: " + new Date().toISOString());
+            _logFile.writeln("Plan path: " + planPath);
+            _logFile.writeln("Log path: " + _logPath);
+            _logFile.writeln("");
+        }
+    } catch(e) {
+        // Ignore - logging is optional
+    }
+}
+
+function closeLogFile() {
+    try {
+        if (_logFile) {
+            _logFile.writeln("");
+            _logFile.writeln("Finished: " + new Date().toISOString());
+            _logFile.close();
+        }
+    } catch(e) {}
+}
+
 function log(msg) {
     try { $.writeln("[AIZINE] " + msg); } catch(e) {}
+    try {
+        if (_logFile) {
+            _logFile.writeln("[" + new Date().toTimeString().substr(0,8) + "] " + msg);
+        }
+    } catch(e) {}
 }
+
+// Initialize log file at script start
+initLogFile();
 
 // JSON fallback - ВИПРАВЛЕНО для InDesign 2026
 if (typeof JSON === "undefined" || !JSON || !JSON.parse) {
@@ -311,79 +379,160 @@ function placeFallbackImages(doc, placements) {
 (function(){
 
     log("==============================================");
-    log("START MAGAZINEBOT COMPOSE (FIXED VERSION)");
+    log("START MAGAZINEBOT COMPOSE (DEBUG VERSION)");
     log("==============================================");
 
-    var planPath = $.getenv("AIZINE_PLAN");
-    if (!planPath) throw new Error("AIZINE_PLAN not set");
+    var planPath, plan, meta, placements, texts, tmpl, doc;
 
-    log("PLAN = " + planPath);
-
-    var plan = readJSON(planPath);
-    var meta = plan.meta;
-    var placements = plan.placements || [];
-    var texts = plan.texts || {};
-
-    log("Template = " + meta.template);
-
-    // open template
-    var tmpl = ensureFile(meta.template);
-    var doc;
-
+    // STEP 1: Get plan path (try env var first, then config file)
     try {
+        log("STEP 1: Getting plan path...");
+        planPath = getPlanPath();
+        if (!planPath) throw new Error("AIZINE_PLAN not set and config file not found");
+        log("STEP 1 OK: PLAN = " + planPath);
+    } catch(e) {
+        throw new Error("STEP 1 FAILED (env/config): " + e.message);
+    }
+
+    // STEP 2: Read JSON plan
+    try {
+        log("STEP 2: Reading JSON plan...");
+        plan = readJSON(planPath);
+        log("STEP 2 OK: JSON loaded");
+    } catch(e) {
+        throw new Error("STEP 2 FAILED (JSON): " + e.message);
+    }
+
+    // STEP 3: Extract meta
+    try {
+        log("STEP 3: Extracting meta...");
+        meta = plan.meta;
+        if (!meta) throw new Error("meta is null");
+        placements = plan.placements || [];
+        texts = plan.texts || {};
+        log("STEP 3 OK: template=" + meta.template + ", placements=" + placements.length);
+    } catch(e) {
+        throw new Error("STEP 3 FAILED (meta): " + e.message);
+    }
+
+    // STEP 4: Check template file
+    try {
+        log("STEP 4: Checking template file...");
+        tmpl = ensureFile(meta.template);
+        log("STEP 4 OK: Template exists: " + tmpl.fsName);
+    } catch(e) {
+        throw new Error("STEP 4 FAILED (template): " + e.message);
+    }
+
+    // STEP 5: Open template
+    try {
+        log("STEP 5: Opening template in InDesign...");
         doc = app.open(tmpl);
-        log("Template opened OK");
+        if (!doc) throw new Error("doc is null after open");
+        log("STEP 5 OK: Document opened, pages=" + doc.pages.length);
     } catch(e) {
-        throw new Error("Cannot open template: " + e.message);
+        throw new Error("STEP 5 FAILED (open): " + e.message);
     }
 
-    // List all labels in document for debugging
-    var existingLabels = listAllLabels(doc);
-
-    // Calculate required pages and adjust document
-    var requiredPages = meta.pages || calculateRequiredPages(placements);
-    log("Required pages from meta: " + requiredPages);
-    adjustPageCount(doc, requiredPages);
-
-    // text
-    for (var key in texts) {
-        if (texts.hasOwnProperty(key)) {
-            var txt = texts[key];
-            if (txt) setTextByLabel(doc, key, txt);
-        }
-    }
-
-    // ALWAYS use fallback - place images by page order
-    // Label-based placement doesn't work reliably with this template
-    log("Placing images by page order (fallback mode)...");
-    var ok = placeFallbackImages(doc, placements);
-    log("Total placed: " + ok + "/" + placements.length);
-
-    // output
-    var outDir = new Folder(meta.output_dir);
-    if (!outDir.exists) outDir.create();
-
-    var outIndd = new File(outDir.fsName + "/final.indd");
-    var outPdf = new File(outDir.fsName + "/final.pdf");
-
-    log("Saving INDD...");
-    doc.save(outIndd);
-
-    log("Exporting PDF...");
-    var preset;
+    // STEP 6: List labels (optional debug)
     try {
-        preset = app.pdfExportPresets.itemByName("[High Quality Print]");
-        if (!preset.isValid) throw "bad preset";
+        log("STEP 6: Listing labels...");
+        var existingLabels = listAllLabels(doc);
+        log("STEP 6 OK: Found " + existingLabels.length + " labels");
     } catch(e) {
-        preset = app.pdfExportPresets[0];
+        log("STEP 6 WARNING (labels): " + e.message);
+        // Continue anyway
     }
 
-    try { preset.forceReadOnly = false; } catch(e) {}
+    // STEP 7: Adjust page count
+    try {
+        log("STEP 7: Adjusting page count...");
+        var requiredPages = meta.pages || calculateRequiredPages(placements);
+        log("STEP 7: Required pages = " + requiredPages);
+        adjustPageCount(doc, requiredPages);
+        log("STEP 7 OK: Pages adjusted to " + doc.pages.length);
+    } catch(e) {
+        throw new Error("STEP 7 FAILED (pages): " + e.message);
+    }
 
-    app.pdfExportPreferences.pageRange = PageRange.ALL_PAGES;
-    doc.exportFile(ExportFormat.PDF_TYPE, outPdf, false, preset);
+    // STEP 8: Set texts
+    try {
+        log("STEP 8: Setting texts...");
+        for (var key in texts) {
+            if (texts.hasOwnProperty(key)) {
+                var txt = texts[key];
+                if (txt) setTextByLabel(doc, key, txt);
+            }
+        }
+        log("STEP 8 OK: Texts set");
+    } catch(e) {
+        log("STEP 8 WARNING (texts): " + e.message);
+        // Continue anyway
+    }
 
-    doc.close(SaveOptions.NO);
+    // STEP 9: Place images
+    try {
+        log("STEP 9: Placing images (fallback mode)...");
+        var ok = placeFallbackImages(doc, placements);
+        log("STEP 9 OK: Placed " + ok + "/" + placements.length);
+    } catch(e) {
+        throw new Error("STEP 9 FAILED (images): " + e.message);
+    }
 
-    log("DONE: " + outPdf.fsName);
+    // STEP 10: Create output directory
+    try {
+        log("STEP 10: Creating output directory...");
+        var outDir = new Folder(meta.output_dir);
+        if (!outDir.exists) outDir.create();
+        log("STEP 10 OK: " + outDir.fsName);
+    } catch(e) {
+        throw new Error("STEP 10 FAILED (outdir): " + e.message);
+    }
+
+    // STEP 11: Save INDD
+    try {
+        log("STEP 11: Saving INDD...");
+        var outIndd = new File(outDir.fsName + "/final.indd");
+        doc.save(outIndd);
+        log("STEP 11 OK: " + outIndd.fsName);
+    } catch(e) {
+        throw new Error("STEP 11 FAILED (save): " + e.message);
+    }
+
+    // STEP 12: Export PDF
+    try {
+        log("STEP 12: Exporting PDF...");
+        var outPdf = new File(outDir.fsName + "/final.pdf");
+
+        var preset;
+        try {
+            preset = app.pdfExportPresets.itemByName("[High Quality Print]");
+            if (!preset.isValid) throw "bad preset";
+        } catch(e2) {
+            preset = app.pdfExportPresets[0];
+        }
+
+        try { preset.forceReadOnly = false; } catch(e3) {}
+
+        app.pdfExportPreferences.pageRange = PageRange.ALL_PAGES;
+        doc.exportFile(ExportFormat.PDF_TYPE, outPdf, false, preset);
+        log("STEP 12 OK: " + outPdf.fsName);
+    } catch(e) {
+        throw new Error("STEP 12 FAILED (pdf): " + e.message);
+    }
+
+    // STEP 13: Close document
+    try {
+        log("STEP 13: Closing document...");
+        doc.close(SaveOptions.NO);
+        log("STEP 13 OK");
+    } catch(e) {
+        log("STEP 13 WARNING (close): " + e.message);
+    }
+
+    log("==============================================");
+    log("DONE SUCCESSFULLY");
+    log("==============================================");
+
+    closeLogFile();
 })();
