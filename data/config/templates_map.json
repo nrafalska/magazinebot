@@ -44,11 +44,11 @@
     {
       "name": "adult18_shablon",
       "pages": 16,
-      "path": "data/templates/adult18/adult18_shablon/adult18_shablon.indd"
+      "path": "data/templates/adult18/18+ шаблон.indd"
     }
   ],
 
   "custom": {
-    "default": "data/templates/adult18/adult18_shablon/adult18_shablon.indd"
+    "default": "data/templates/adult18/18+ шаблон.indd"
   }
 }

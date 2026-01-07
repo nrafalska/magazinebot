@@ -73,13 +73,21 @@ def run_indesign(plan_path: str):
     plan_path = plan_path.replace("\\", "/")
     jsx_path = COMPOSE_JSX.as_posix()
 
+    # Write plan path to a config file that JSX can read reliably
+    # Environment variables don't always work with InDesign COM
+    config_file = Path(os.environ["TEMP"]) / "magazinebot_config.txt"
+    config_file.write_text(plan_path, encoding="utf-8")
+    config_path = str(config_file).replace("\\", "/")
+
     ps_script = f'''
 Write-Output "[PS] === InDesign COM Runner ==="
 Write-Output "[PS] JSX path: {jsx_path}"
 Write-Output "[PS] Plan path: {plan_path}"
+Write-Output "[PS] Config file: {config_path}"
 
 $env:AIZINE_PLAN = "{plan_path}"
 $env:AIZINE_JSX  = "{jsx_path}"
+$env:AIZINE_CONFIG = "{config_path}"
 
 # Check if JSX file exists
 if (-not (Test-Path $env:AIZINE_JSX)) {{
@@ -140,6 +148,9 @@ exit 0
     tmp = Path(os.environ["TEMP"]) / "magazinebot_indesign.ps1"
     tmp.write_text(ps_script, encoding="utf-8")
 
+    # Extract job_id from plan_path to find debug log
+    job_dir = Path(plan_path).parent.parent
+
     try:
         result = subprocess.run(
             ["powershell", "-ExecutionPolicy", "Bypass", "-File", str(tmp)],
@@ -150,6 +161,16 @@ exit 0
         )
         safe_print(result.stdout)
         safe_print(result.stderr)
+
+        # Read and display compose debug log if it exists
+        debug_log = job_dir / "meta" / "compose_debug.log"
+        if debug_log.exists():
+            log("=== COMPOSE.JSX DEBUG LOG ===")
+            try:
+                safe_print(debug_log.read_text(encoding="utf-8"))
+            except Exception as e:
+                log(f"Could not read debug log: {e}")
+            log("=== END DEBUG LOG ===")
 
         if result.returncode != 0:
             raise RuntimeError("InDesign failed")
