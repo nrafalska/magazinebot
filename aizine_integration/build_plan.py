@@ -125,21 +125,16 @@ def calculate_pages_for_photos(photo_count: int, verbose=False) -> int:
     """
     Розраховує кількість сторінок на основі кількості фото.
     - 1 фото на обкладинку
-    - до 3 фото на внутрішню сторінку
+    - 1 фото на внутрішню сторінку (кожне фото = окрема сторінка)
     - 1 фото на задню обкладинку
     - Мінімум 4 сторінки, завжди парне число
     """
     if photo_count <= 0:
         return 4
 
-    # Cover = 1, Back = 1, решта = internal
-    internal_photos = max(0, photo_count - 2)
-
-    # До 3 фото на сторінку
-    internal_pages = (internal_photos + 2) // 3  # ceil division
-
-    # Cover (1) + internal + back (1)
-    total = 1 + internal_pages + 1
+    # Кожне фото = 1 сторінка (включаючи обкладинки)
+    # Cover + internal pages + back cover
+    total = photo_count
 
     # Мінімум 4 сторінки
     if total < 4:
@@ -156,12 +151,13 @@ def calculate_pages_for_photos(photo_count: int, verbose=False) -> int:
 def generate_placements(photos: list[dict], pages: int, verbose=False) -> tuple[list[dict], int]:
     """
     Генерує placements та повертає (placements, actual_pages).
+    Кожне фото = окрема сторінка.
     """
     placements = []
     if not photos:
         return placements, 4
 
-    log("Generating placements", verbose)
+    log(f"Generating placements for {len(photos)} photos", verbose)
 
     # 1) Обкладинка — беремо перше вертикальне, або перше фото
     vertical = [p for p in photos if p.get("orientation") == "vertical"]
@@ -173,29 +169,26 @@ def generate_placements(photos: list[dict], pages: int, verbose=False) -> tuple[
         "filename": cover_photo["filename"],
         "fit": "fill",
     })
+    log(f"  COVER_IMAGE -> {cover_photo['filename']}", verbose)
 
-    # 2) Внутрішні сторінки
+    # 2) Внутрішні сторінки — кожне фото на окрему сторінку
     remaining = [p for p in photos if p["filename"] != cover_photo["filename"]]
 
-    page_num = 1
-    img_num = 1
+    # Всі фото крім останнього йдуть на внутрішні сторінки
+    core = remaining[:-1] if len(remaining) > 1 else []
 
-    # Простий greedy-алгоритм: до 3 фото на сторінку
-    core = remaining[:-1] if len(remaining) > 1 else remaining
-    for photo in core:
+    for idx, photo in enumerate(core):
+        page_num = idx + 1
+        label = f"PAGE_{page_num:02d}_IMG_01"
         placements.append({
-            "label": f"PAGE_{page_num:02d}_IMG_{img_num:02d}",
+            "label": label,
             "photo": photo["path"],
             "filename": photo["filename"],
-            "fit": "proportional",
+            "fit": "fill",
         })
+        log(f"  {label} -> {photo['filename']}", verbose)
 
-        img_num += 1
-        if img_num > 3:
-            img_num = 1
-            page_num += 1
-
-    # 3) Останнє фото — на задню обкладинку (якщо лишилось)
+    # 3) Останнє фото — на задню обкладинку
     if remaining:
         back_photo = remaining[-1]
         placements.append({
@@ -204,11 +197,13 @@ def generate_placements(photos: list[dict], pages: int, verbose=False) -> tuple[
             "filename": back_photo["filename"],
             "fit": "fill",
         })
+        log(f"  BACK_IMAGE -> {back_photo['filename']}", verbose)
 
     # Розраховуємо реальну кількість сторінок
     actual_pages = calculate_pages_for_photos(len(photos), verbose)
 
     log(f"Generated {len(placements)} placements for {actual_pages} pages", verbose)
+    log(f"Labels: {[p['label'] for p in placements]}", verbose)
     return placements, actual_pages
 
 

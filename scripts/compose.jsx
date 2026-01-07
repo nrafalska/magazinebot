@@ -162,27 +162,53 @@ function adjustPageCount(doc, targetPages) {
     var currentPages = doc.pages.length;
     log("Current pages: " + currentPages + ", Target: " + targetPages);
 
-    if (currentPages <= targetPages) {
-        log("No pages to remove");
+    // Get master spread for new pages
+    var masterSpread = null;
+    try {
+        if (doc.masterSpreads.length > 0) {
+            masterSpread = doc.masterSpreads[0];
+            log("Found master spread: " + masterSpread.name);
+        }
+    } catch(e) {
+        log("No master spread found: " + e.message);
+    }
+
+    // ADD pages if we need more
+    if (currentPages < targetPages) {
+        var pagesToAdd = targetPages - currentPages;
+        log("Adding " + pagesToAdd + " pages with master...");
+
+        for (var i = 0; i < pagesToAdd; i++) {
+            try {
+                var newPage = doc.pages.add();
+                if (masterSpread) {
+                    newPage.appliedMaster = masterSpread;
+                }
+            } catch(e) {
+                log("Error adding page: " + e.message);
+                break;
+            }
+        }
+        log("Pages after adding: " + doc.pages.length);
         return;
     }
 
-    // Remove pages from the end (but keep at least targetPages)
-    var pagesToRemove = currentPages - targetPages;
-    log("Removing " + pagesToRemove + " pages...");
+    // REMOVE pages if we have too many
+    if (currentPages > targetPages) {
+        var pagesToRemove = currentPages - targetPages;
+        log("Removing " + pagesToRemove + " pages...");
 
-    for (var i = 0; i < pagesToRemove; i++) {
-        try {
-            // Always remove the last page
-            var lastPage = doc.pages[doc.pages.length - 1];
-            lastPage.remove();
-        } catch(e) {
-            log("Error removing page: " + e.message);
-            break;
+        for (var i = 0; i < pagesToRemove; i++) {
+            try {
+                var lastPage = doc.pages[doc.pages.length - 1];
+                lastPage.remove();
+            } catch(e) {
+                log("Error removing page: " + e.message);
+                break;
+            }
         }
+        log("Pages after removal: " + doc.pages.length);
     }
-
-    log("Pages after removal: " + doc.pages.length);
 }
 
 function listAllLabels(doc) {
@@ -204,6 +230,79 @@ function listAllLabels(doc) {
     log("=== END LABELS ===");
 
     return labels;
+}
+
+// ======================================================
+// FALLBACK: Place images into rectangles by page order
+// ======================================================
+function getImageFramesOnPage(page) {
+    var frames = [];
+    var items = page.allPageItems;
+
+    for (var i = 0; i < items.length; i++) {
+        var item = items[i];
+        // Check if it's a rectangle that can hold an image
+        if (item.constructor.name === "Rectangle" ||
+            item.constructor.name === "Polygon" ||
+            item.constructor.name === "Oval") {
+            frames.push(item);
+        }
+    }
+
+    // Sort by position (top-left first)
+    frames.sort(function(a, b) {
+        var boundsA = a.geometricBounds; // [top, left, bottom, right]
+        var boundsB = b.geometricBounds;
+        if (Math.abs(boundsA[0] - boundsB[0]) < 10) {
+            return boundsA[1] - boundsB[1]; // same row, sort by left
+        }
+        return boundsA[0] - boundsB[0]; // sort by top
+    });
+
+    return frames;
+}
+
+function placeFallbackImages(doc, placements) {
+    log("=== FALLBACK MODE: Placing images by page order ===");
+
+    var placedCount = 0;
+    var photoIndex = 0;
+
+    for (var pageIdx = 0; pageIdx < doc.pages.length; pageIdx++) {
+        if (photoIndex >= placements.length) break;
+
+        var page = doc.pages[pageIdx];
+        var frames = getImageFramesOnPage(page);
+
+        log("Page " + (pageIdx + 1) + ": found " + frames.length + " image frames");
+
+        // Place one photo per page (in the largest frame)
+        if (frames.length > 0 && photoIndex < placements.length) {
+            // Find largest frame by area
+            var largestFrame = frames[0];
+            var maxArea = 0;
+
+            for (var f = 0; f < frames.length; f++) {
+                var bounds = frames[f].geometricBounds;
+                var area = (bounds[2] - bounds[0]) * (bounds[3] - bounds[1]);
+                if (area > maxArea) {
+                    maxArea = area;
+                    largestFrame = frames[f];
+                }
+            }
+
+            var p = placements[photoIndex];
+            log("  Placing " + p.filename + " into frame on page " + (pageIdx + 1));
+
+            if (placeImage(largestFrame, p.photo, "fill")) {
+                placedCount++;
+            }
+            photoIndex++;
+        }
+    }
+
+    log("=== FALLBACK: Placed " + placedCount + "/" + placements.length + " images ===");
+    return placedCount;
 }
 
 // ======================================================
@@ -254,24 +353,11 @@ function listAllLabels(doc) {
         }
     }
 
-    // images
-    log("Placing images...");
-    var ok = 0;
-    var failed = [];
-    for (var i = 0; i < placements.length; i++) {
-        var p = placements[i];
-        if (placeImageByLabel(doc, p.label, p.photo, p.fit || "proportional")) {
-            ok++;
-        } else {
-            failed.push(p.label);
-        }
-    }
-    log("Placed " + ok + "/" + placements.length);
-
-    if (failed.length > 0) {
-        log("FAILED PLACEMENTS: " + failed.join(", "));
-        log("Check that template has frames with these labels!");
-    }
+    // ALWAYS use fallback - place images by page order
+    // Label-based placement doesn't work reliably with this template
+    log("Placing images by page order (fallback mode)...");
+    var ok = placeFallbackImages(doc, placements);
+    log("Total placed: " + ok + "/" + placements.length);
 
     // output
     var outDir = new Folder(meta.output_dir);

@@ -123,9 +123,9 @@ async def save_photo(message: Message, state: FSMContext):
             job_dirs={k: str(v) for k, v in job_dirs.items()},
             photos=[],
         )
-    else:
-        job_dirs = {k: Path(v) for k, v in data["job_dirs"].items()}
+        data = await state.get_data()  # refresh data after update
 
+    job_dirs = {k: Path(v) for k, v in data["job_dirs"].items()}
     photos = data.get("photos", [])
 
     if len(photos) >= settings.max_photos:
@@ -149,7 +149,9 @@ async def save_photo(message: Message, state: FSMContext):
     if not file:
         return
 
-    dest = job_dirs["input"] / f"photo_{len(photos) + 1:03d}{ext}"
+    # Use UUID to avoid race condition with albums (media groups)
+    unique_id = uuid.uuid4().hex[:8]
+    dest = job_dirs["input"] / f"photo_{unique_id}{ext}"
     await message.bot.download(file, destination=dest)
 
     photos.append(dest.name)

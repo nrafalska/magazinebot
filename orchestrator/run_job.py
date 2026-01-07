@@ -75,35 +75,57 @@ def run_indesign(plan_path: str):
 
     ps_script = f'''
 Write-Output "[PS] === InDesign COM Runner ==="
+Write-Output "[PS] JSX path: {jsx_path}"
+Write-Output "[PS] Plan path: {plan_path}"
 
 $env:AIZINE_PLAN = "{plan_path}"
 $env:AIZINE_JSX  = "{jsx_path}"
 
+# Check if JSX file exists
+if (-not (Test-Path $env:AIZINE_JSX)) {{
+    Write-Output "[PS] ERROR: JSX file not found!"
+    exit 1
+}}
+
 # Read JSX content
-$code = Get-Content $env:AIZINE_JSX -Raw
+$code = Get-Content $env:AIZINE_JSX -Raw -Encoding UTF8
+if (-not $code) {{
+    Write-Output "[PS] ERROR: JSX file is empty!"
+    exit 1
+}}
+Write-Output "[PS] JSX loaded, length: $($code.Length) chars"
 
 # Create COM
+Write-Output "[PS] Creating InDesign COM object..."
 try {{
     $app = New-Object -ComObject {INDESIGN_COM_PROGID}
+    Write-Output "[PS] COM object created: $($app.Name) $($app.Version)"
 }} catch {{
     Write-Output "[PS] ERROR: Cannot create COM object"
+    Write-Output $_
     exit 1
 }}
 
 # Close open docs
 try {{
     if ($app.Documents.Count -gt 0) {{
+        Write-Output "[PS] Closing $($app.Documents.Count) open documents..."
         $app.Documents.Close()
     }}
-}} catch {{}}
+}} catch {{
+    Write-Output "[PS] Warning: Could not close documents: $_"
+}}
 
 # Execute script
+Write-Output "[PS] Executing JSX script..."
 try {{
     $app.DoScript($code, 1246973031)
+    Write-Output "[PS] JSX execution completed"
 }} catch {{
     Write-Output "[PS] ERROR executing JSX"
-    Write-Output $_
-    $app.Quit()
+    Write-Output "[PS] Exception: $_"
+    Write-Output "[PS] Exception type: $($_.Exception.GetType().FullName)"
+    try {{ $app.Quit() }} catch {{}}
     exit 1
 }}
 
