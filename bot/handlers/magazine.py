@@ -225,10 +225,18 @@ async def chosen_style(callback: CallbackQuery, state: FSMContext):
     async def task():
         try:
             pdf = await asyncio.to_thread(run_pipeline, job_id)
+            # Send PDF
             await callback.message.answer_document(
                 FSInputFile(str(pdf)),
-                caption="Готово! 📕",
+                caption="Готово! 📕 Ось PDF:",
             )
+            # Send INDD file too
+            indd = pdf.with_suffix(".indd")
+            if indd.exists():
+                await callback.message.answer_document(
+                    FSInputFile(str(indd)),
+                    caption="А ось INDD для редагування:",
+                )
         except Exception as e:
             logger.exception("Magazine generation failed", exc_info=e)
             await callback.message.answer(f"😔 Сталася помилка: {e}")
