@@ -303,12 +303,12 @@ def build_plan(job_id=None, job_path: Path | None = None, verbose=False) -> dict
     if not photos:
         raise ValueError("No photos found in input folder")
 
-    placements, actual_pages = generate_placements(photos, pages, verbose)
+    placements, min_pages = generate_placements(photos, pages, verbose)
     texts = generate_texts(theme, client_name)
 
-    # Використовуємо реальну кількість сторінок на основі фото
-    final_pages = actual_pages
-    log(f"Final page count: {final_pages} (based on {len(photos)} photos)", verbose)
+    # Використовуємо вибір юзера, але не менше мінімуму для фото
+    final_pages = max(pages, min_pages)
+    log(f"Final page count: {final_pages} (user selected: {pages}, min for photos: {min_pages})", verbose)
 
     # ===== Формуємо план =====
     plan = {
