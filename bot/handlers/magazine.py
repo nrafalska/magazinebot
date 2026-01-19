@@ -191,6 +191,7 @@ async def done_photos(message: Message, state: FSMContext):
         await message.answer("Спочатку надішли хоч одне фото 🙂")
         return
 
+    logger.info(f"[FLOW] Photos done, count={len(data.get('photos', []))}. Showing styles keyboard")
     await state.set_state(MagazineFSM.waiting_style)
     await message.answer("✨ Обери тематику:", reply_markup=styles_kb())
 
@@ -208,14 +209,19 @@ async def chosen_theme_category(callback: CallbackQuery, state: FSMContext):
     theme = callback.data.split(":", 1)[1]  # lavstory / for_her / adult18
     await state.update_data(theme=theme)
 
+    logger.info(f"[FLOW] User selected theme category: {theme}")
+
     # Показуємо теми для вибраної тематики
     await state.set_state(MagazineFSM.waiting_theme)
 
     if theme == "lavstory":
+        logger.info("[FLOW] Showing lavstory themes keyboard")
         await callback.message.edit_text("💙 Обери тему Lavstory:", reply_markup=lavstory_themes_kb())
     elif theme == "for_her":
+        logger.info("[FLOW] Showing for_her themes keyboard")
         await callback.message.edit_text("💛 Обери тему:", reply_markup=for_her_themes_kb())
     else:  # adult18
+        logger.info("[FLOW] Showing adult18 themes keyboard")
         await callback.message.edit_text("🔥 Обери тему 18+:", reply_markup=adult18_themes_kb())
 
 
@@ -247,6 +253,8 @@ async def chosen_category(callback: CallbackQuery, state: FSMContext):
     theme = parts[1]
     category = parts[2]
 
+    logger.info(f"[FLOW] User selected specific theme: {theme}/{category}")
+
     await state.update_data(theme=theme, category=category)
 
     # Розраховуємо рекомендовану кількість сторінок
@@ -256,6 +264,8 @@ async def chosen_category(callback: CallbackQuery, state: FSMContext):
     # Рекомендація: photo_count округлене до найближчого доступного
     options = [12, 16, 20, 24, 32, 36, 40, 50]
     recommended = min(options, key=lambda x: abs(x - photo_count)) if photo_count > 0 else 16
+
+    logger.info(f"[FLOW] Showing pages keyboard, photo_count={photo_count}, recommended={recommended}")
 
     await state.set_state(MagazineFSM.waiting_pages)
     await callback.message.edit_text(
@@ -276,6 +286,7 @@ async def chosen_pages(callback: CallbackQuery, state: FSMContext):
     await callback.answer()
 
     pages = int(callback.data.split(":", 1)[1])
+    logger.info(f"[FLOW] User selected pages: {pages}")
     data = await state.get_data()
 
     job_id = data["job_id"]
