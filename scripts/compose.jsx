@@ -126,20 +126,50 @@ function ensureFile(path) {
 }
 
 // ======================================================
-// IMAGE PLACEMENT
+// IMAGE PLACEMENT (IMPROVED)
 // ======================================================
-function placeImage(frame, imgPath, fitType) {
+function placeImage(frame, imgPath, fitType, photoInfo) {
     try {
         var img = ensureFile(imgPath);
         frame.place(img);
 
-        if (fitType === "fill") {
-            frame.fit(FitOptions.FILL_PROPORTIONALLY);
-        } else {
-            frame.fit(FitOptions.PROPORTIONALLY);
+        // Отримуємо розміри фрейму
+        var frameBounds = frame.geometricBounds; // [top, left, bottom, right]
+        var frameHeight = frameBounds[2] - frameBounds[0];
+        var frameWidth = frameBounds[3] - frameBounds[1];
+        var frameRatio = frameHeight / frameWidth;
+
+        // Визначаємо орієнтацію фрейму
+        var frameOrientation = "square";
+        if (frameRatio > 1.2) {
+            frameOrientation = "vertical";
+        } else if (frameRatio < 0.8) {
+            frameOrientation = "horizontal";
         }
 
+        // Отримуємо орієнтацію фото (якщо передано)
+        var photoOrientation = photoInfo ? photoInfo.orientation : null;
+
+        log("Frame: " + frameWidth.toFixed(0) + "x" + frameHeight.toFixed(0) + " (" + frameOrientation + ")");
+        if (photoOrientation) {
+            log("Photo orientation: " + photoOrientation);
+        }
+
+        // Вибираємо найкращий спосіб вписування
+        if (fitType === "fill") {
+            // FILL_PROPORTIONALLY - заповнює фрейм, може обрізати
+            frame.fit(FitOptions.FILL_PROPORTIONALLY);
+        } else if (fitType === "fit") {
+            // PROPORTIONALLY - вписує без обрізки, можуть бути поля
+            frame.fit(FitOptions.PROPORTIONALLY);
+        } else {
+            // За замовчуванням - fill для кращого вигляду
+            frame.fit(FitOptions.FILL_PROPORTIONALLY);
+        }
+
+        // Центруємо вміст
         frame.fit(FitOptions.CENTER_CONTENT);
+
         return true;
 
     } catch (e) {
@@ -317,25 +347,83 @@ function getImageFramesOnPage(page) {
         if (item.constructor.name === "Rectangle" ||
             item.constructor.name === "Polygon" ||
             item.constructor.name === "Oval") {
-            frames.push(item);
+            // Отримуємо інформацію про фрейм
+            var bounds = item.geometricBounds; // [top, left, bottom, right]
+            var height = bounds[2] - bounds[0];
+            var width = bounds[3] - bounds[1];
+            var ratio = height / width;
+
+            var orientation = "square";
+            if (ratio > 1.2) {
+                orientation = "vertical";
+            } else if (ratio < 0.8) {
+                orientation = "horizontal";
+            }
+
+            frames.push({
+                frame: item,
+                width: width,
+                height: height,
+                area: width * height,
+                orientation: orientation,
+                bounds: bounds
+            });
         }
     }
 
     // Sort by position (top-left first)
     frames.sort(function(a, b) {
-        var boundsA = a.geometricBounds; // [top, left, bottom, right]
-        var boundsB = b.geometricBounds;
-        if (Math.abs(boundsA[0] - boundsB[0]) < 10) {
-            return boundsA[1] - boundsB[1]; // same row, sort by left
+        if (Math.abs(a.bounds[0] - b.bounds[0]) < 10) {
+            return a.bounds[1] - b.bounds[1]; // same row, sort by left
         }
-        return boundsA[0] - boundsB[0]; // sort by top
+        return a.bounds[0] - b.bounds[0]; // sort by top
     });
 
     return frames;
 }
 
+function findBestFrameForPhoto(frames, photoOrientation) {
+    /**
+     * Знаходить найкращий фрейм для фото з урахуванням орієнтації.
+     * Пріоритет:
+     * 1. Фрейм з такою ж орієнтацією (найбільший за площею)
+     * 2. Якщо немає - найбільший фрейм
+     */
+    if (frames.length === 0) return null;
+
+    // Шукаємо фрейми з відповідною орієнтацією
+    var matchingFrames = [];
+    for (var i = 0; i < frames.length; i++) {
+        if (frames[i].orientation === photoOrientation) {
+            matchingFrames.push(frames[i]);
+        }
+    }
+
+    // Якщо є фрейми з відповідною орієнтацією - беремо найбільший
+    if (matchingFrames.length > 0) {
+        var bestMatch = matchingFrames[0];
+        for (var j = 1; j < matchingFrames.length; j++) {
+            if (matchingFrames[j].area > bestMatch.area) {
+                bestMatch = matchingFrames[j];
+            }
+        }
+        log("  Found matching orientation frame: " + bestMatch.orientation + " (" + bestMatch.width.toFixed(0) + "x" + bestMatch.height.toFixed(0) + ")");
+        return bestMatch;
+    }
+
+    // Інакше беремо найбільший фрейм
+    var largest = frames[0];
+    for (var k = 1; k < frames.length; k++) {
+        if (frames[k].area > largest.area) {
+            largest = frames[k];
+        }
+    }
+    log("  No matching orientation, using largest frame: " + largest.orientation + " (" + largest.width.toFixed(0) + "x" + largest.height.toFixed(0) + ")");
+    return largest;
+}
+
 function placeFallbackImages(doc, placements) {
-    log("=== FALLBACK MODE: Placing images by page order ===");
+    log("=== IMPROVED FALLBACK: Placing images with orientation matching ===");
 
     var placedCount = 0;
     var photoIndex = 0;
@@ -348,26 +436,21 @@ function placeFallbackImages(doc, placements) {
 
         log("Page " + (pageIdx + 1) + ": found " + frames.length + " image frames");
 
-        // Place one photo per page (in the largest frame)
         if (frames.length > 0 && photoIndex < placements.length) {
-            // Find largest frame by area
-            var largestFrame = frames[0];
-            var maxArea = 0;
-
-            for (var f = 0; f < frames.length; f++) {
-                var bounds = frames[f].geometricBounds;
-                var area = (bounds[2] - bounds[0]) * (bounds[3] - bounds[1]);
-                if (area > maxArea) {
-                    maxArea = area;
-                    largestFrame = frames[f];
-                }
-            }
-
             var p = placements[photoIndex];
-            log("  Placing " + p.filename + " into frame on page " + (pageIdx + 1));
 
-            if (placeImage(largestFrame, p.photo, "fill")) {
-                placedCount++;
+            // Визначаємо орієнтацію фото з placement (якщо є)
+            var photoOrientation = p.orientation || "unknown";
+            log("  Photo: " + p.filename + " (" + photoOrientation + ")");
+
+            // Знаходимо найкращий фрейм для цього фото
+            var bestFrame = findBestFrameForPhoto(frames, photoOrientation);
+
+            if (bestFrame) {
+                log("  Placing into frame on page " + (pageIdx + 1));
+                if (placeImage(bestFrame.frame, p.photo, "fill", {orientation: photoOrientation})) {
+                    placedCount++;
+                }
             }
             photoIndex++;
         }
