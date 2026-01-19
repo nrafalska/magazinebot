@@ -1,5 +1,6 @@
 # ============================================
-#   AIZINE MagazineBot — magazine.py (FINAL)
+#   AIZINE MagazineBot — magazine.py (v2)
+#   With theme selection, page count, spreads
 # ============================================
 
 import asyncio
@@ -15,7 +16,14 @@ from aiogram.types import Message, CallbackQuery, FSInputFile
 
 from bot.config import settings
 from bot.states import MagazineFSM
-from bot.keyboards import photos_done_kb, styles_kb
+from bot.keyboards import (
+    photos_done_kb,
+    styles_kb,
+    lavstory_themes_kb,
+    for_her_themes_kb,
+    adult18_themes_kb,
+    pages_kb,
+)
 
 from orchestrator.run_job import (
     run_build_plan,
@@ -47,26 +55,14 @@ def create_dirs(job_id: str):
 # =============================
 # META JSON
 # =============================
-def write_job_json(job_dirs, job_id, style_key, user, photo_count: int = 0):
+def write_job_json(job_dirs, job_id, theme: str, category: str, pages: int, user: str, photo_count: int = 0):
     """Створює job.json перед запуском пайплайна."""
 
-    if style_key == "lavstory_insha_podiya":
-        theme = "lavstory"
-        category = "insha_podiya"
-    elif style_key == "for_her_universalni":
-        theme = "for_her"
-        category = "universalni"
-    else:
-        theme = "adult18"
-        category = "adult18_shablon"
-
-    # pages буде перераховано в build_plan.py на основі фото
-    # тут задаємо лише як hint для вибору шаблону
     meta = {
         "job_id": job_id,
         "theme": theme,
         "category": category,
-        "pages": 16,  # hint для шаблону, реальна к-сть буде в compose_plan
+        "pages": pages,
         "photo_count": photo_count,
         "client_name": user,
     }
@@ -196,47 +192,125 @@ async def done_photos(message: Message, state: FSMContext):
         return
 
     await state.set_state(MagazineFSM.waiting_style)
-    await message.answer("✨ Обери стиль:", reply_markup=styles_kb())
+    await message.answer("✨ Обери тематику:", reply_markup=styles_kb())
 
 
 # =============================
-# CHOOSE STYLE → START PIPELINE
+# STEP 2: CHOOSE THEME CATEGORY (Lavstory / For Her / 18+)
 # =============================
 @router.callback_query(
     StateFilter(MagazineFSM.waiting_style),
-    F.data.startswith("style:"),
+    F.data.startswith("theme:"),
 )
-async def chosen_style(callback: CallbackQuery, state: FSMContext):
+async def chosen_theme_category(callback: CallbackQuery, state: FSMContext):
     await callback.answer()
 
-    style_key = callback.data.split(":", 1)[1]
+    theme = callback.data.split(":", 1)[1]  # lavstory / for_her / adult18
+    await state.update_data(theme=theme)
+
+    # Показуємо теми для вибраної тематики
+    await state.set_state(MagazineFSM.waiting_theme)
+
+    if theme == "lavstory":
+        await callback.message.edit_text("💙 Обери тему Lavstory:", reply_markup=lavstory_themes_kb())
+    elif theme == "for_her":
+        await callback.message.edit_text("💛 Обери тему:", reply_markup=for_her_themes_kb())
+    else:  # adult18
+        await callback.message.edit_text("🔥 Обери тему 18+:", reply_markup=adult18_themes_kb())
+
+
+# =============================
+# BACK BUTTON → Return to styles
+# =============================
+@router.callback_query(
+    StateFilter(MagazineFSM.waiting_theme, MagazineFSM.waiting_pages),
+    F.data == "back:styles",
+)
+async def back_to_styles(callback: CallbackQuery, state: FSMContext):
+    await callback.answer()
+    await state.set_state(MagazineFSM.waiting_style)
+    await callback.message.edit_text("✨ Обери тематику:", reply_markup=styles_kb())
+
+
+# =============================
+# STEP 3: CHOOSE SPECIFIC THEME (category)
+# =============================
+@router.callback_query(
+    StateFilter(MagazineFSM.waiting_theme),
+    F.data.startswith("category:"),
+)
+async def chosen_category(callback: CallbackQuery, state: FSMContext):
+    await callback.answer()
+
+    # category:lavstory:insha_podiya -> theme=lavstory, category=insha_podiya
+    parts = callback.data.split(":")
+    theme = parts[1]
+    category = parts[2]
+
+    await state.update_data(theme=theme, category=category)
+
+    # Розраховуємо рекомендовану кількість сторінок
+    data = await state.get_data()
+    photo_count = len(data.get("photos", []))
+
+    # Рекомендація: photo_count округлене до найближчого доступного
+    options = [12, 16, 20, 24, 32, 36, 40, 50]
+    recommended = min(options, key=lambda x: abs(x - photo_count)) if photo_count > 0 else 16
+
+    await state.set_state(MagazineFSM.waiting_pages)
+    await callback.message.edit_text(
+        f"📄 Обери кількість сторінок:\n"
+        f"(У тебе {photo_count} фото)",
+        reply_markup=pages_kb(recommended)
+    )
+
+
+# =============================
+# STEP 4: CHOOSE PAGE COUNT → START PIPELINE
+# =============================
+@router.callback_query(
+    StateFilter(MagazineFSM.waiting_pages),
+    F.data.startswith("pages:"),
+)
+async def chosen_pages(callback: CallbackQuery, state: FSMContext):
+    await callback.answer()
+
+    pages = int(callback.data.split(":", 1)[1])
     data = await state.get_data()
 
     job_id = data["job_id"]
     job_dirs = {k: Path(v) for k, v in data["job_dirs"].items()}
     username = callback.from_user.full_name
     photo_count = len(data.get("photos", []))
+    theme = data.get("theme", "adult18")
+    category = data.get("category", "adult18_shablon")
 
-    write_job_json(job_dirs, job_id, style_key, username, photo_count)
+    write_job_json(job_dirs, job_id, theme, category, pages, username, photo_count)
 
     await state.set_state(MagazineFSM.processing)
-    await callback.message.answer("Генерую журнал… це займе 1–3 хвилини ⏳")
+    await callback.message.edit_text("⏳ Генерую журнал… це займе 1–3 хвилини")
 
     async def task():
         try:
             pdf = await asyncio.to_thread(run_pipeline, job_id)
-            # Send PDF
+
+            # Надсилаємо превью по розворотах
+            await send_spreads_preview(callback, pdf)
+
+            # Потім надсилаємо повний PDF
             await callback.message.answer_document(
                 FSInputFile(str(pdf)),
-                caption="Готово! 📕 Ось PDF:",
+                caption="📕 Повний PDF журналу:",
             )
-            # Send INDD file too
+
+            # Надсилаємо INDD для редагування
             indd = pdf.with_suffix(".indd")
             if indd.exists():
                 await callback.message.answer_document(
                     FSInputFile(str(indd)),
-                    caption="А ось INDD для редагування:",
+                    caption="📝 INDD файл для редагування:",
                 )
+
         except Exception as e:
             logger.exception("Magazine generation failed", exc_info=e)
             await callback.message.answer(f"😔 Сталася помилка: {e}")
@@ -245,3 +319,93 @@ async def chosen_style(callback: CallbackQuery, state: FSMContext):
 
     asyncio.create_task(task())
     await asyncio.sleep(0.1)
+
+
+# =============================
+# SEND SPREADS PREVIEW
+# =============================
+async def send_spreads_preview(callback: CallbackQuery, pdf_path: Path):
+    """Надсилає превью журналу по розворотах (2 сторінки)."""
+    try:
+        from pdf2image import convert_from_path
+
+        output_dir = pdf_path.parent
+        spreads_dir = output_dir / "spreads"
+        spreads_dir.mkdir(exist_ok=True)
+
+        # Конвертуємо PDF в зображення
+        pages = convert_from_path(str(pdf_path), dpi=150)
+
+        if not pages:
+            logger.warning("No pages converted from PDF")
+            return
+
+        await callback.message.answer("📖 Превью по розворотах:")
+
+        # Створюємо розвороти (по 2 сторінки)
+        spread_num = 1
+        i = 0
+
+        while i < len(pages):
+            if i == 0:
+                # Перша сторінка (обкладинка) - окремо
+                spread_path = spreads_dir / f"spread_{spread_num:02d}.jpg"
+                pages[0].save(str(spread_path), "JPEG", quality=85)
+                await callback.message.answer_photo(
+                    FSInputFile(str(spread_path)),
+                    caption=f"📄 Обкладинка"
+                )
+                i += 1
+                spread_num += 1
+            elif i == len(pages) - 1:
+                # Остання сторінка (задня обкладинка) - окремо
+                spread_path = spreads_dir / f"spread_{spread_num:02d}.jpg"
+                pages[i].save(str(spread_path), "JPEG", quality=85)
+                await callback.message.answer_photo(
+                    FSInputFile(str(spread_path)),
+                    caption=f"📄 Задня обкладинка"
+                )
+                i += 1
+                spread_num += 1
+            else:
+                # Внутрішні сторінки - по 2 (розворот)
+                from PIL import Image
+
+                left_page = pages[i]
+                right_page = pages[i + 1] if i + 1 < len(pages) - 1 else None
+
+                if right_page:
+                    # Об'єднуємо 2 сторінки в розворот
+                    width = left_page.width + right_page.width
+                    height = max(left_page.height, right_page.height)
+                    spread = Image.new("RGB", (width, height), "white")
+                    spread.paste(left_page, (0, 0))
+                    spread.paste(right_page, (left_page.width, 0))
+
+                    spread_path = spreads_dir / f"spread_{spread_num:02d}.jpg"
+                    spread.save(str(spread_path), "JPEG", quality=85)
+                    await callback.message.answer_photo(
+                        FSInputFile(str(spread_path)),
+                        caption=f"📖 Розворот {spread_num - 1} (стор. {i + 1}-{i + 2})"
+                    )
+                    i += 2
+                else:
+                    # Непарна сторінка
+                    spread_path = spreads_dir / f"spread_{spread_num:02d}.jpg"
+                    left_page.save(str(spread_path), "JPEG", quality=85)
+                    await callback.message.answer_photo(
+                        FSInputFile(str(spread_path)),
+                        caption=f"📄 Сторінка {i + 1}"
+                    )
+                    i += 1
+                spread_num += 1
+
+            # Невелика затримка щоб не перевантажувати Telegram
+            await asyncio.sleep(0.3)
+
+    except ImportError:
+        logger.warning("pdf2image not installed, skipping spreads preview")
+        await callback.message.answer("📕 Журнал готовий! (превью розворотів недоступне)")
+    except Exception as e:
+        logger.warning(f"Failed to generate spreads preview: {e}")
+        await callback.message.answer("📕 Журнал готовий!")

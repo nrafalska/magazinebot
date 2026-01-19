@@ -1,6 +1,7 @@
 import argparse
 import json
 import os
+import random
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -148,34 +149,58 @@ def calculate_pages_for_photos(photo_count: int, verbose=False) -> int:
     return total
 
 
-def generate_placements(photos: list[dict], pages: int, verbose=False) -> tuple[list[dict], int]:
+def generate_placements(photos: list[dict], pages: int, verbose=False, shuffle_internal: bool = True) -> tuple[list[dict], int]:
     """
     Генерує placements та повертає (placements, actual_pages).
     Кожне фото = окрема сторінка.
+
+    Args:
+        photos: список фото з інформацією
+        pages: бажана кількість сторінок
+        verbose: режим детального логування
+        shuffle_internal: перемішувати внутрішні фото для варіативності
     """
     placements = []
     if not photos:
         return placements, 4
 
-    log(f"Generating placements for {len(photos)} photos", verbose)
+    log(f"Generating placements for {len(photos)} photos (shuffle={shuffle_internal})", verbose)
 
-    # 1) Обкладинка — беремо перше вертикальне, або перше фото
+    # 1) Обкладинка — беремо ВИПАДКОВЕ вертикальне фото, або перше
     vertical = [p for p in photos if p.get("orientation") == "vertical"]
-    cover_photo = vertical[0] if vertical else photos[0]
+    if vertical:
+        cover_photo = random.choice(vertical)
+    else:
+        cover_photo = photos[0]
 
     placements.append({
         "label": "COVER_IMAGE",
         "photo": cover_photo["path"],
         "filename": cover_photo["filename"],
+        "orientation": cover_photo.get("orientation", "unknown"),
         "fit": "fill",
     })
-    log(f"  COVER_IMAGE -> {cover_photo['filename']}", verbose)
+    log(f"  COVER_IMAGE -> {cover_photo['filename']} ({cover_photo.get('orientation', 'unknown')})", verbose)
 
     # 2) Внутрішні сторінки — кожне фото на окрему сторінку
     remaining = [p for p in photos if p["filename"] != cover_photo["filename"]]
 
-    # Всі фото крім останнього йдуть на внутрішні сторінки
-    core = remaining[:-1] if len(remaining) > 1 else []
+    # Вибираємо фото для задньої обкладинки — ВИПАДКОВЕ вертикальне
+    back_candidates = [p for p in remaining if p.get("orientation") == "vertical"]
+    if back_candidates:
+        back_photo = random.choice(back_candidates)
+    elif remaining:
+        back_photo = remaining[-1]
+    else:
+        back_photo = None
+
+    # Внутрішні фото (без cover і back)
+    core = [p for p in remaining if back_photo is None or p["filename"] != back_photo["filename"]]
+
+    # ПЕРЕМІШУЄМО внутрішні фото для варіативності макету
+    if shuffle_internal and len(core) > 1:
+        random.shuffle(core)
+        log(f"  Shuffled {len(core)} internal photos for variation", verbose)
 
     for idx, photo in enumerate(core):
         page_num = idx + 1
@@ -184,20 +209,21 @@ def generate_placements(photos: list[dict], pages: int, verbose=False) -> tuple[
             "label": label,
             "photo": photo["path"],
             "filename": photo["filename"],
+            "orientation": photo.get("orientation", "unknown"),
             "fit": "fill",
         })
-        log(f"  {label} -> {photo['filename']}", verbose)
+        log(f"  {label} -> {photo['filename']} ({photo.get('orientation', 'unknown')})", verbose)
 
-    # 3) Останнє фото — на задню обкладинку
-    if remaining:
-        back_photo = remaining[-1]
+    # 3) Задня обкладинка
+    if back_photo:
         placements.append({
             "label": "BACK_IMAGE",
             "photo": back_photo["path"],
             "filename": back_photo["filename"],
+            "orientation": back_photo.get("orientation", "unknown"),
             "fit": "fill",
         })
-        log(f"  BACK_IMAGE -> {back_photo['filename']}", verbose)
+        log(f"  BACK_IMAGE -> {back_photo['filename']} ({back_photo.get('orientation', 'unknown')})", verbose)
 
     # Розраховуємо реальну кількість сторінок
     actual_pages = calculate_pages_for_photos(len(photos), verbose)
