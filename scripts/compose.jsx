@@ -337,16 +337,53 @@ function listAllLabels(doc) {
 // ======================================================
 // FALLBACK: Place images into rectangles by page order
 // ======================================================
-function getImageFramesOnPage(page) {
+
+// Список можливих назв шару з фото (пріоритет зверху вниз)
+var PHOTO_LAYER_NAMES = ["Photos", "photos", "PHOTOS", "Images", "images", "IMAGES", "Фото", "фото", "Photo", "Image"];
+
+function findPhotoLayer(doc) {
+    /**
+     * Шукає шар для фото в документі.
+     * Повертає об'єкт layer або null якщо не знайдено.
+     */
+    for (var i = 0; i < PHOTO_LAYER_NAMES.length; i++) {
+        try {
+            var layer = doc.layers.itemByName(PHOTO_LAYER_NAMES[i]);
+            if (layer.isValid) {
+                log("Found photo layer: " + layer.name);
+                return layer;
+            }
+        } catch(e) {
+            // Layer not found, continue
+        }
+    }
+    log("No dedicated photo layer found, will use all frames");
+    return null;
+}
+
+function getImageFramesOnPage(page, photoLayer) {
     var frames = [];
     var items = page.allPageItems;
 
     for (var i = 0; i < items.length; i++) {
         var item = items[i];
+
         // Check if it's a rectangle that can hold an image
         if (item.constructor.name === "Rectangle" ||
             item.constructor.name === "Polygon" ||
             item.constructor.name === "Oval") {
+
+            // Якщо є photoLayer - перевіряємо чи фрейм на цьому шарі
+            if (photoLayer) {
+                try {
+                    if (item.itemLayer.name !== photoLayer.name) {
+                        continue; // Пропускаємо фрейми не на шарі Photos
+                    }
+                } catch(e) {
+                    continue;
+                }
+            }
+
             // Отримуємо інформацію про фрейм
             var bounds = item.geometricBounds; // [top, left, bottom, right]
             var height = bounds[2] - bounds[0];
@@ -371,12 +408,9 @@ function getImageFramesOnPage(page) {
         }
     }
 
-    // Sort by position (top-left first)
+    // Sort by area (largest first) for better photo placement
     frames.sort(function(a, b) {
-        if (Math.abs(a.bounds[0] - b.bounds[0]) < 10) {
-            return a.bounds[1] - b.bounds[1]; // same row, sort by left
-        }
-        return a.bounds[0] - b.bounds[0]; // sort by top
+        return b.area - a.area;
     });
 
     return frames;
@@ -423,7 +457,15 @@ function findBestFrameForPhoto(frames, photoOrientation) {
 }
 
 function placeFallbackImages(doc, placements) {
-    log("=== IMPROVED FALLBACK: Placing images with orientation matching ===");
+    log("=== LAYER-BASED IMAGE PLACEMENT ===");
+
+    // Шукаємо шар Photos
+    var photoLayer = findPhotoLayer(doc);
+    if (photoLayer) {
+        log("Using layer: " + photoLayer.name);
+    } else {
+        log("No photo layer found - using largest frames on each page");
+    }
 
     var placedCount = 0;
     var photoIndex = 0;
@@ -432,9 +474,9 @@ function placeFallbackImages(doc, placements) {
         if (photoIndex >= placements.length) break;
 
         var page = doc.pages[pageIdx];
-        var frames = getImageFramesOnPage(page);
+        var frames = getImageFramesOnPage(page, photoLayer);
 
-        log("Page " + (pageIdx + 1) + ": found " + frames.length + " image frames");
+        log("Page " + (pageIdx + 1) + ": found " + frames.length + " photo frames" + (photoLayer ? " on layer '" + photoLayer.name + "'" : ""));
 
         if (frames.length > 0 && photoIndex < placements.length) {
             var p = placements[photoIndex];
@@ -447,7 +489,7 @@ function placeFallbackImages(doc, placements) {
             var bestFrame = findBestFrameForPhoto(frames, photoOrientation);
 
             if (bestFrame) {
-                log("  Placing into frame on page " + (pageIdx + 1));
+                log("  Placing into frame on page " + (pageIdx + 1) + " (size: " + bestFrame.width.toFixed(0) + "x" + bestFrame.height.toFixed(0) + ")");
                 if (placeImage(bestFrame.frame, p.photo, "fill", {orientation: photoOrientation})) {
                     placedCount++;
                 }
@@ -456,7 +498,7 @@ function placeFallbackImages(doc, placements) {
         }
     }
 
-    log("=== FALLBACK: Placed " + placedCount + "/" + placements.length + " images ===");
+    log("=== PLACED " + placedCount + "/" + placements.length + " images ===");
     return placedCount;
 }
 
