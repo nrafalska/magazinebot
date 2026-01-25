@@ -1,0 +1,11 @@
+# MagazineBot dependencies
+
+# Telegram bot
+aiogram>=3.7.0
+
+# Image processing
+Pillow>=10.0.0
+pdf2image>=1.16.0
+
+# Environment
+python-dotenv>=1.0.0
